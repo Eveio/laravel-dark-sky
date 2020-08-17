@@ -1,13 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jack
- * Date: 6/13/17
- * Time: 3:26 PM
- */
 
 namespace Naughtonium\LaravelDarkSky;
 
+use GuzzleHttp\Client;
 
 class DarkSky
 {
@@ -19,43 +14,35 @@ class DarkSky
     protected $params = [];
     protected $excludeables = ['currently', 'minutely', 'hourly', 'daily', 'alerts', 'flags'];
 
-    /**
-     * DarkSky constructor.
-     */
     public function __construct()
     {
         $this->apiKey = config('darksky.apikey');
-        $this->endpoint = $this->endpoint . $this->apiKey;
+        $this->endpoint = $this->endpoint.$this->apiKey;
     }
 
     /**
-     * Sets the latitude and longitude. Must be set
-     *
-     * @param $lat
-     * @param $lon
-     * @return $this
+     * Sets the latitude and longitude. Must be set.
      */
-    public function location($lat, $lon)
+    public function location($lat, $lon): self
     {
         $this->lat = $lat;
         $this->lon = $lon;
+
         return $this;
     }
 
     /**
      * Builds the endpoint url and sends the get request
-     *
-     * @return mixed
      */
     public function get()
     {
-        $url = $this->endpoint  . '/' . $this->lat . ',' . $this->lon;
+        $url = $this->endpoint.'/'.$this->lat.','.$this->lon;
 
         if ($this->timestamp) {
-            $url .= ',' . $this->timestamp;
+            $url .= ','.$this->timestamp;
         }
 
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
 
         return json_decode($client->get($url, [
             'query' => $this->params,
@@ -64,73 +51,62 @@ class DarkSky
 
     /**
      * Sets the exclude query parameter by taking array of exclusions
-     *
-     * @param $blocks
-     * @return $this
      */
-    public function excludes($blocks)
+    public function excludes(array $blocks): self
     {
         $this->params['exclude'] = implode(',', $blocks);
+
         return $this;
     }
 
     /**
-     * Sets the exclude query parameter by taking an arry of inclusions
-     *
-     * @param $blocks
-     * @return $this
+     * Sets the exclude query parameter by taking an array of inclusions
      */
-    public function includes($blocks)
+    public function includes(array $blocks): self
     {
         $this->params['exclude'] = implode(',', array_diff($this->excludeables, $blocks));
+
         return $this;
     }
 
     /**
      * Specifies a unix timestamp for non-current forecasts
      * See: https://darksky.net/dev/docs/time-machine
-     *
-     * @param $timestamp
-     * @return $this
      */
-    public function atTime($timestamp)
+    public function atTime($timestamp): self
     {
         $this->timestamp = $timestamp;
+
         return $this;
     }
 
     /**
      * Extends the number of hours returned in hourly from 48 to 168
-     *
-     * @return $this
      */
-    public function extend()
+    public function extend(): self
     {
         $this->params['extend'] = 'hourly';
+
         return $this;
     }
 
     /**
      * Sets the return language
-     *
-     * @param $lang
-     * @return $this
      */
-    public function language($lang)
+    public function language($lang): self
     {
         $this->params['lang'] = $lang;
+
         return $this;
     }
 
     /**
      * Sets the return units
-     *
-     * @param $unit
-     * @return $this
      */
-    public function units($unit)
+    public function units($unit): self
     {
         $this->params['units'] = $unit;
+
         return $this;
     }
 
@@ -140,60 +116,48 @@ class DarkSky
 
     /**
      * Filters out metadata to get only currently
-     * 
-     * @return $this
      */
-    public function currently()
+    public function currently(): self
     {
         return $this->includes(['currently'])->get()->currently;
     }
 
     /**
      * Filters out metadata to get only minutely
-     *
-     * @return $this
      */
-    public function minutely()
+    public function minutely(): self
     {
         return $this->includes(['minutely'])->get()->minutely->data;
     }
 
     /**
      * Filters out metadata to get only hourly
-     *
-     * @return $this
      */
-    public function hourly()
+    public function hourly(): self
     {
         return $this->includes(['hourly'])->get()->hourly->data;
     }
 
     /**
      * Filters out metadata to get only daily
-     *
-     * @return $this
      */
-    public function daily()
+    public function daily(): self
     {
         return $this->includes(['daily'])->get()->daily->data;
     }
 
     /**
      * Filters out metadata to get only alerts
-     *
-     * @return $this
      */
-    public function alerts()
+    public function alerts(): self
     {
         return $this->includes(['alerts'])->get();
     }
 
     /**
      * Filters out metadata to get only flags
-     *
-     * @return $this
      */
-    public function flags()
+    public function flags(): self
     {
         return $this->includes(['flags'])->get()->flags;
     }

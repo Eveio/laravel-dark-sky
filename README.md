@@ -3,6 +3,8 @@
 [![Software License][ico-license]](LICENSE.md)
 [![Total Downloads](https://poser.pugx.org/naughtonium/laravel-dark-sky/downloads)](https://packagist.org/packages/naughtonium/laravel-dark-sky)
 
+> This is a fork from the original naughtonium/laravel-dark-sky package, to make it compatible with newer versions of Laravel.
+
 This provides a Laravel style wrapper for the DarkSky api. For more information regarding request and response formats, visit: https://darksky.net/dev/docs
 
 

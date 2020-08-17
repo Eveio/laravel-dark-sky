@@ -1,4 +1,5 @@
 <?php
+
 namespace Naughtonium\LaravelDarkSky\Facades;
 
 use Illuminate\Support\Facades\Facade;
@@ -10,6 +11,8 @@ class DarkSky extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return 'darksky'; }
-
+    protected static function getFacadeAccessor()
+    {
+        return 'darksky';
+    }
 }
