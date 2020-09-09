@@ -1,7 +1,7 @@
 {
     "name": "naughtonium/laravel-dark-sky",
     "type": "library",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "description": "Provides a Wrapper for the DarkSky API",
     "keywords": [
         "naughtonium",
@@ -19,7 +19,7 @@
     ],
     "require": {
         "php": ">=7.0",
-        "guzzlehttp/guzzle": "~5.3|~6.0",
+        "guzzlehttp/guzzle": "~5.3|~6.0|~7.0",
         "ext-json": "*"
     },
     "require-dev": {
